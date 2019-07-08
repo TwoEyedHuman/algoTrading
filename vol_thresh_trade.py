@@ -1,3 +1,5 @@
+############################### IMPORTS ##########################################
+
 from ib.opt import Connection, message
 from ib.ext.Contract import Contract
 from ib.ext.Order import Order
@@ -10,13 +12,39 @@ import datetime as dt
 import collections
 import logging
 
+##################################################################################
+
+
+
+
+
+################################# SETTINGS ######################################
+
 logging.basicConfig(level=logging.INFO)
 logging.getLogger('requests').setLevel(logging.ERROR)
+
+##################################################################################
+
+
+
+
+
+################################## CONSTANTS #####################################
 
 MARKET_OPEN = dt.time(9,30)
 MARKET_CLOSE = dt.time(13,00)
 
+##################################################################################
+
+
+
+
+
+########################### AUXILLARY STRUCTURES #################################
+
 StockPrice = collections.namedtuple('StockPrice', 'ticker price')
+
+##################################################################################
 
 def is_time_between(begin_time, end_time, check_time=None):
     # checks if the check_time is between two times
@@ -69,6 +97,13 @@ def get_volatile_stocks(cur, conn, cnt=1):
 
 
 def make_contract(ticker, sec_tp, exch, prim_exch, curr):
+    # build a contract object
+    # ticker : ticker symbol of security
+    # sec_tp : type of security (stock, bond)
+    # exch : 
+    # prim_exch : 
+    # curr : currency of the transaction (USD)
+
     Contract.m_symbol = ticker
     Contract.m_secType = sec_tp
     Contract.m_exchange = exch
@@ -78,6 +113,11 @@ def make_contract(ticker, sec_tp, exch, prim_exch, curr):
 
 
 def make_order(action, quantity, price = None):
+    # build an order object
+    # action : 
+    # quantity : volume of security to transact
+    # price : price point of security
+
     if price is not None:
         order = Order()
         order.m_orderType = 'LMT'
@@ -92,6 +132,7 @@ def make_order(action, quantity, price = None):
         order.m_action = action
 
     return order
+
 
 class Downloader(object):
 
@@ -223,7 +264,7 @@ class Downloader(object):
             self.disconnect()
             self.stay_connect = False
 
-            
+        
 
 if __name__ == "__main__":
     dl = Downloader()
