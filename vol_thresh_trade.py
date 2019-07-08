@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO)
 logging.getLogger('requests').setLevel(logging.ERROR)
 
 MARKET_OPEN = dt.time(9,30)
-MARKET_CLOSE = dt.time(16,00)
+MARKET_CLOSE = dt.time(13,00)
 
 StockPrice = collections.namedtuple('StockPrice', 'ticker price')
 
@@ -35,7 +35,7 @@ def connect():
     # connect to the database and build a cursor and connection
 
     # build the connection and cursor objects
-    conn = psql.connect(user="user", password="", host="localhost", port="5432", database="trading")
+    conn = psql.connect(user="blocke", password="", host="localhost", port="5432", database="trading")
     cur = conn.cursor()
     
     return cur, conn
@@ -211,8 +211,8 @@ class Downloader(object):
             elif self.field_price > max_val:
                 print("[info] [%s] [$%.2f] Price for %s above threshold. Selling." % (time.strftime("%H:%M"), self.field_price, contract.m_symbol))
                 offer = make_order("SELL", vol, max_val)
-                self.placeOrder(oid, contract, offer)
-                oid += 1
+                self.placeOrder(self._oid, contract, offer)
+                self.oid += 1
 
             else:
                 print("[info] [%s] [$%.2f] Price for %s inside threshold. Holding." % (time.strftime("%H:%M"), self.field_price, contract.m_symbol))

@@ -1,3 +1,9 @@
+# Brandon Locke
+# This script loops throughout the trading day pulling the current
+# prices for stocks in a separate file. The prices are loaded into
+# a postgres database.
+
+
 from yahoo_fin import stock_info as si
 import psycopg2 as psql
 import datetime as dt
@@ -79,6 +85,9 @@ def is_time_between(begin_time, end_time, check_time=None):
         return check_time >= begin_time or check_time <= end_time
 
 def loadTickers(fname):
+    # loads ticker symbols from file
+    # fname : filename containing ticker symbols
+
     with open(fname, 'r') as f:
         tickerList = [line.rstrip() for line in f.readlines()]
         return tickerList
